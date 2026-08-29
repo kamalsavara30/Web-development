@@ -1,0 +1,3249 @@
+A task management system is a digital tool that helps individuals and teams plan, assign, track, and organize their work from start to finish.
+Key features of task managenment:
+Task Creation and Assignment:Break down projects into actionable steps and assign an owner to each task.
+Prioritization and Deadlines: Set due dates and sort tasks by urgency so everyone knows what to tackle first.
+Visual Workflows: Use boards, lists, or calendars (like Kanban views) to see task stages at a glance (e.g., To Do, In Progress, Done).
+Real-Time Collaboration: Share files, leave comments, and get automated notifications without needing status-update meetings.
+Progress Tracking: Monitor overall team performance and spot bottlenecks early.
+Based on code we must create code on html :
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Task Management System</title>
+
+<style>
+
+/* =========================================================
+   GENERAL
+========================================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f4f7fb;
+    color: #1f2937;
+    line-height: 1.6;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.container {
+    width: 92%;
+    max-width: 1250px;
+    margin: auto;
+}
+
+section {
+    padding: 70px 0;
+}
+
+.section-title {
+    text-align: center;
+    font-size: 34px;
+    margin-bottom: 15px;
+    color: #312e81;
+}
+
+.section-subtitle {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto 40px;
+    color: #64748b;
+}
+
+
+/* =========================================================
+   NAVBAR
+========================================================= */
+
+nav {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background: #111827;
+    color: white;
+    box-shadow: 0 3px 15px rgba(0,0,0,0.2);
+}
+
+.nav-container {
+    width: 92%;
+    max-width: 1250px;
+    margin: auto;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    min-height: 70px;
+}
+
+.logo {
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.logo span {
+    color: #a78bfa;
+}
+
+.nav-links {
+    display: flex;
+    gap: 20px;
+    list-style: none;
+}
+
+.nav-links a {
+    color: white;
+    font-size: 14px;
+    transition: 0.3s;
+}
+
+.nav-links a:hover {
+    color: #a78bfa;
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.hero {
+    min-height: 650px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+    color: white;
+
+    background:
+        linear-gradient(
+            rgba(17,24,39,0.88),
+            rgba(49,46,129,0.90)
+        );
+
+    position: relative;
+    overflow: hidden;
+}
+
+.hero::before {
+    content: "";
+    position: absolute;
+
+    width: 450px;
+    height: 450px;
+
+    border-radius: 50%;
+
+    background: rgba(167,139,250,0.15);
+
+    top: -180px;
+    left: -150px;
+}
+
+.hero::after {
+    content: "";
+    position: absolute;
+
+    width: 400px;
+    height: 400px;
+
+    border-radius: 50%;
+
+    background: rgba(96,165,250,0.12);
+
+    right: -150px;
+    bottom: -150px;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 900px;
+}
+
+.hero-icon {
+    font-size: 75px;
+    margin-bottom: 15px;
+}
+
+.hero h1 {
+    font-size: 58px;
+    margin-bottom: 15px;
+}
+
+.hero h2 {
+    font-size: 25px;
+    color: #ddd6fe;
+    margin-bottom: 20px;
+}
+
+.hero p {
+    font-size: 18px;
+    max-width: 750px;
+    margin: auto;
+}
+
+.hero-buttons {
+    margin-top: 30px;
+}
+
+.btn {
+    display: inline-block;
+    padding: 13px 25px;
+    border-radius: 8px;
+    margin: 5px;
+
+    border: none;
+    cursor: pointer;
+
+    font-weight: bold;
+}
+
+.btn-primary {
+    background: #8b5cf6;
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #7c3aed;
+}
+
+.btn-light {
+    background: white;
+    color: #312e81;
+}
+
+
+/* =========================================================
+   PROJECT INTRODUCTION
+========================================================= */
+
+.introduction {
+    background: white;
+}
+
+.info-box {
+    background: #f8fafc;
+
+    border-left: 5px solid #6366f1;
+
+    padding: 25px;
+
+    border-radius: 10px;
+
+    max-width: 1000px;
+    margin: auto;
+}
+
+.info-box p {
+    margin-bottom: 12px;
+}
+
+
+/* =========================================================
+   CARDS
+========================================================= */
+
+.cards {
+    display: grid;
+
+    grid-template-columns:
+        repeat(auto-fit, minmax(230px, 1fr));
+
+    gap: 20px;
+}
+
+.card {
+    background: white;
+
+    padding: 25px;
+
+    border-radius: 15px;
+
+    box-shadow:
+        0 5px 20px rgba(15,23,42,0.08);
+
+    transition: 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-7px);
+}
+
+.card-icon {
+    font-size: 40px;
+    margin-bottom: 12px;
+}
+
+.card h3 {
+    color: #3730a3;
+    margin-bottom: 10px;
+}
+
+
+/* =========================================================
+   OBJECTIVES
+========================================================= */
+
+.objectives {
+    background: #eef2ff;
+}
+
+
+/* =========================================================
+   PROBLEM / SOLUTION
+========================================================= */
+
+.problem-solution {
+    background: white;
+}
+
+.two-column {
+    display: grid;
+
+    grid-template-columns:
+        repeat(auto-fit, minmax(300px, 1fr));
+
+    gap: 25px;
+}
+
+.problem,
+.solution {
+    padding: 30px;
+
+    border-radius: 15px;
+}
+
+.problem {
+    background: #fff1f2;
+    border-left: 5px solid #ef4444;
+}
+
+.solution {
+    background: #f0fdf4;
+    border-left: 5px solid #22c55e;
+}
+
+.problem h3 {
+    color: #dc2626;
+}
+
+.solution h3 {
+    color: #15803d;
+}
+
+.two-column ul {
+    margin-top: 15px;
+    padding-left: 25px;
+}
+
+
+/* =========================================================
+   FEATURES
+========================================================= */
+
+.features {
+    background: #f8fafc;
+}
+
+
+/* =========================================================
+   TECHNOLOGIES
+========================================================= */
+
+.tech {
+    background: white;
+}
+
+.tech-card {
+    text-align: center;
+}
+
+.tech-logo {
+    font-size: 55px;
+}
+
+.html-color {
+    color: #e34f26;
+}
+
+.css-color {
+    color: #1572b6;
+}
+
+.js-color {
+    color: #d6a900;
+}
+
+
+/* =========================================================
+   WORKFLOW
+========================================================= */
+
+.workflow {
+    background: #eef2ff;
+}
+
+.workflow-container {
+    display: flex;
+
+    flex-wrap: wrap;
+
+    justify-content: center;
+
+    align-items: center;
+
+    gap: 10px;
+}
+
+.workflow-step {
+    background: white;
+
+    width: 160px;
+
+    padding: 20px;
+
+    border-radius: 12px;
+
+    text-align: center;
+
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.workflow-step strong {
+    display: block;
+    color: #4338ca;
+    margin-top: 8px;
+}
+
+.arrow {
+    font-size: 28px;
+    color: #6366f1;
+}
+
+
+/* =========================================================
+   POSTER
+========================================================= */
+
+.poster-section {
+    background: #111827;
+    color: white;
+}
+
+.poster {
+    max-width: 1000px;
+
+    margin: auto;
+
+    padding: 45px;
+
+    border: 3px solid #a78bfa;
+
+    border-radius: 20px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #111827,
+            #312e81
+        );
+
+    box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+}
+
+.poster-title {
+    text-align: center;
+
+    font-size: 42px;
+
+    color: #ddd6fe;
+}
+
+.poster-tagline {
+    text-align: center;
+
+    font-size: 20px;
+
+    margin-bottom: 35px;
+
+    color: #c4b5fd;
+}
+
+.poster-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(auto-fit, minmax(250px, 1fr));
+
+    gap: 20px;
+}
+
+.poster-box {
+    background: rgba(255,255,255,0.08);
+
+    padding: 20px;
+
+    border-radius: 12px;
+}
+
+.poster-box h3 {
+    color: #c4b5fd;
+
+    margin-bottom: 10px;
+}
+
+.poster-box ul {
+    padding-left: 20px;
+}
+
+
+/* =========================================================
+   TASK MANAGEMENT APPLICATION
+========================================================= */
+
+.app-section {
+    background: #f8fafc;
+}
+
+.app-panel {
+    background: white;
+
+    padding: 30px;
+
+    border-radius: 20px;
+
+    box-shadow: 0 8px 30px rgba(15,23,42,0.08);
+}
+
+
+/* Dashboard */
+
+.dashboard {
+    display: grid;
+
+    grid-template-columns:
+        repeat(auto-fit, minmax(180px, 1fr));
+
+    gap: 15px;
+
+    margin-bottom: 30px;
+}
+
+.stat {
+    padding: 20px;
+
+    border-radius: 12px;
+
+    background: #eef2ff;
+
+    text-align: center;
+}
+
+.stat-number {
+    font-size: 35px;
+
+    font-weight: bold;
+
+    color: #4338ca;
+}
+
+
+/* Form */
+
+.task-form {
+    padding: 25px;
+
+    background: #f8fafc;
+
+    border-radius: 15px;
+
+    margin-bottom: 30px;
+}
+
+.form-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(auto-fit, minmax(200px, 1fr));
+
+    gap: 12px;
+}
+
+input,
+textarea,
+select {
+    width: 100%;
+
+    padding: 12px;
+
+    border: 1px solid #cbd5e1;
+
+    border-radius: 8px;
+
+    outline: none;
+
+    background: white;
+}
+
+textarea {
+    min-height: 100px;
+
+    resize: vertical;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    border-color: #6366f1;
+}
+
+
+/* Task Board */
+
+.task-board {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 20px;
+}
+
+.task-column {
+    background: #eef2f7;
+
+    padding: 18px;
+
+    border-radius: 15px;
+
+    min-height: 300px;
+}
+
+.task-column h3 {
+    margin-bottom: 15px;
+
+    color: #312e81;
+}
+
+
+/* Task Card */
+
+.task-card {
+    background: white;
+
+    padding: 18px;
+
+    border-radius: 12px;
+
+    margin-bottom: 12px;
+
+    box-shadow:
+        0 4px 12px rgba(0,0,0,0.08);
+}
+
+.task-card h4 {
+    color: #1e1b4b;
+
+    margin-bottom: 8px;
+}
+
+.task-card p {
+    font-size: 14px;
+
+    margin: 4px 0;
+}
+
+.priority-high {
+    color: #dc2626;
+
+    font-weight: bold;
+}
+
+.priority-medium {
+    color: #d97706;
+
+    font-weight: bold;
+}
+
+.priority-low {
+    color: #16a34a;
+
+    font-weight: bold;
+}
+
+.task-actions {
+    margin-top: 12px;
+}
+
+.small-btn {
+    padding: 7px 10px;
+
+    border: none;
+
+    border-radius: 6px;
+
+    cursor: pointer;
+
+    margin: 2px;
+
+    color: white;
+}
+
+.progress-btn {
+    background: #2563eb;
+}
+
+.complete-btn {
+    background: #16a34a;
+}
+
+.delete-btn {
+    background: #dc2626;
+}
+
+.edit-btn {
+    background: #7c3aed;
+}
+
+
+/* =========================================================
+   SEARCH / FILTER
+========================================================= */
+
+.filters {
+    display: grid;
+
+    grid-template-columns:
+        2fr 1fr 1fr;
+
+    gap: 10px;
+
+    margin-bottom: 25px;
+}
+
+
+/* =========================================================
+   REMINDER
+========================================================= */
+
+.reminder {
+    padding: 20px;
+
+    border-radius: 12px;
+
+    background: #fff7ed;
+
+    border-left: 5px solid #f97316;
+
+    margin-bottom: 20px;
+}
+
+
+/* =========================================================
+   STATISTICS
+========================================================= */
+
+.statistics {
+    background: white;
+}
+
+.progress-container {
+    max-width: 900px;
+
+    margin: 30px auto;
+}
+
+.progress-bar-bg {
+    height: 30px;
+
+    background: #e5e7eb;
+
+    border-radius: 30px;
+
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+
+    width: 0%;
+
+    background: #6366f1;
+
+    transition: 0.5s;
+}
+
+.progress-text {
+    text-align: center;
+
+    margin-top: 10px;
+
+    font-weight: bold;
+}
+
+
+/* =========================================================
+   VIDEO
+========================================================= */
+
+.videos {
+    background: #f1f5f9;
+}
+
+.video-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(auto-fit, minmax(320px, 1fr));
+
+    gap: 25px;
+}
+
+.video-card {
+    background: white;
+
+    padding: 15px;
+
+    border-radius: 15px;
+
+    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+}
+
+.video-card iframe {
+    width: 100%;
+
+    height: 220px;
+
+    border: none;
+
+    border-radius: 10px;
+}
+
+.video-card h3 {
+    margin-top: 15px;
+
+    color: #312e81;
+}
+
+
+/* =========================================================
+   ADVANTAGES
+========================================================= */
+
+.advantages {
+    background: white;
+}
+
+
+/* =========================================================
+   FUTURE
+========================================================= */
+
+.future {
+    background: #eef2ff;
+}
+
+
+/* =========================================================
+   VIVA
+========================================================= */
+
+.viva {
+    background: #111827;
+
+    color: white;
+}
+
+.viva-box {
+    max-width: 1000px;
+
+    margin: auto;
+
+    background: #1f2937;
+
+    padding: 30px;
+
+    border-radius: 15px;
+}
+
+.viva-question {
+    color: #c4b5fd;
+
+    margin-top: 20px;
+
+    margin-bottom: 5px;
+}
+
+
+/* =========================================================
+   CONCLUSION
+========================================================= */
+
+.conclusion {
+    background: white;
+
+    text-align: center;
+}
+
+.conclusion-box {
+    max-width: 900px;
+
+    margin: auto;
+
+    padding: 30px;
+
+    background: #eef2ff;
+
+    border-radius: 15px;
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+footer {
+    background: #020617;
+
+    color: white;
+
+    text-align: center;
+
+    padding: 30px;
+}
+
+footer p {
+    margin: 5px;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media(max-width: 850px) {
+
+    .nav-links {
+        display: none;
+    }
+
+    .hero h1 {
+        font-size: 40px;
+    }
+
+    .task-board {
+        grid-template-columns: 1fr;
+    }
+
+    .filters {
+        grid-template-columns: 1fr;
+    }
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     NAVIGATION
+===================================================== -->
+
+<nav>
+
+<div class="nav-container">
+
+<div class="logo">
+📋 <span>Task</span>Manager
+</div>
+
+<ul class="nav-links">
+
+<li><a href="#home">Home</a></li>
+
+<li><a href="#about">About</a></li>
+
+<li><a href="#features">Features</a></li>
+
+<li><a href="#workflow">Workflow</a></li>
+
+<li><a href="#application">Application</a></li>
+
+<li><a href="#videos">Videos</a></li>
+
+<li><a href="#future">Future</a></li>
+
+</ul>
+
+</div>
+
+</nav>
+
+
+
+<!-- =====================================================
+     HERO
+===================================================== -->
+
+<section class="hero" id="home">
+
+<div class="hero-content">
+
+<div class="hero-icon">📋</div>
+
+<h1>TASK MANAGEMENT SYSTEM</h1>
+
+<h2>Organize • Prioritize • Schedule • Collaborate • Complete</h2>
+
+<p>
+
+A smart web-based task management platform that helps users
+create tasks, set deadlines, assign responsibilities,
+track progress and improve productivity.
+
+</p>
+
+<div class="hero-buttons">
+
+<a href="#application"
+class="btn btn-primary">
+
+🚀 Try Application
+
+</a>
+
+<a href="#about"
+class="btn btn-light">
+
+📖 Learn More
+
+</a>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- =====================================================
+     ABOUT PROJECT
+===================================================== -->
+
+<section class="introduction" id="about">
+
+<div class="container">
+
+<h2 class="section-title">
+📖 About the Project
+</h2>
+
+<p class="section-subtitle">
+
+Understanding the purpose and importance of a Task Management System.
+
+</p>
+
+<div class="info-box">
+
+<p>
+
+A <strong>Task Management System</strong> is a software
+application designed to help individuals and teams
+organize their work efficiently.
+
+</p>
+
+<p>
+
+The system allows users to create tasks, provide descriptions,
+set deadlines, assign team members, select priorities,
+categorize work into projects and monitor progress.
+
+</p>
+
+<p>
+
+Instead of maintaining tasks manually on paper or separate
+applications, users can manage their work from a centralized
+dashboard.
+
+</p>
+
+<p>
+
+The system can also provide reminders for upcoming deadlines
+and visual progress information so users can understand the
+current status of their work.
+
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- =====================================================
+     OBJECTIVES
+===================================================== -->
+
+<section class="objectives">
+
+<div class="container">
+
+<h2 class="section-title">
+🎯 Project Objectives
+</h2>
+
+<div class="cards">
+
+<div class="card">
+
+<div class="card-icon">📝</div>
+
+<h3>Create Tasks</h3>
+
+<p>
+Allow users to create and describe tasks quickly.
+</p>
+
+</div>
+
+
+<div class="card">
+
+<div class="card-icon">📅</div>
+
+<h3>Manage Deadlines</h3>
+
+<p>
+Set deadlines to prevent important work from being forgotten.
+</p>
+
+</div>
+
+
+<div class="card">
+
+<div class="card-icon">🔥</div>
+
+<h3>Prioritize Work</h3>
+
+<p>
+Classify tasks into High, Medium and Low priority.
+</p>
+
+</div>
+
+
+<div class="card">
+
+<div class="card-icon">📊</div>
+
+<h3>Track Progress</h3>
+
+<p>
+Monitor pending, active and completed tasks.
+</p>
+
+</div>
+
+
+<div class="card">
+
+<div class="card-icon">🤝</div>
+
+<h3>Collaboration</h3>
+
+<p>
+Assign tasks to team members and improve coordination.
+</p>
+
+</div>
+
+
+<div class="card">
+
+<div class="card-icon">🚀</div>
+
+<h3>Improve Productivity</h3>
+
+<p>
+Help users organize their time and complete work efficiently.
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- =====================================================
+     PROBLEM AND SOLUTION
+===================================================== -->
+
+<section class="problem-solution">
+
+<div class="container">
+
+<h2 class="section-title">
+⚠️ Problem & Solution
+</h2>
+
+<div class="two-column">
+
+<div class="problem">
+
+<h3>❌ Problems</h3>
+
+<ul>
+
+<li>Difficulty managing multiple tasks.</li>
+
+<li>Missed deadlines.</li>
+
+<li>Poor task prioritization.</li>
+
+<li>Difficult progress tracking.</li>
+
+<li>Unclear task responsibilities.</li>
+
+<li>Scattered project information.</li>
+
+<li>Poor team coordination.</li>
+
+</ul>
+
+</div>
+
+
+<div class="solution">
+
+<h3>✅ Proposed Solution</h3>
+
+<ul>
+
+<li>Centralized task dashboard.</li>
+
+<li>Deadline management.</li>
+
+<li>Priority-based organization.</li>
+
+<li>Progress tracking.</li>
+
+<li>Task assignment.</li>
+
+<li>Project categorization.</li>
+
+<li>Visual workflow management.</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- =====================================================
+     FEATURES
+===================================================== -->
+
+<section class="features" id="features">
+
+<div class="container">
+
+<h2 class="section-title">
+⭐ Major Features
+</h2>
+
+<p class="section-subtitle">
+
+Important features included in the proposed system.
+
+</p>
+
+<div class="cards">
+
+<div class="card">
+
+<div class="card-icon">➕</div>
+
+<h3>Task Creation</h3>
+
+<p>
+Users can create a task by entering its title,
+description, project, deadline and assigned person.
+</p>
+
+</div>
+
+
+<div class="card">
+
+<div class="card-icon">📅</div>
+
+<h3>Deadline Management</h3>
+
+<p>
+Users can specify due dates and monitor upcoming deadlines.
+</p>
+
+</div>
+
+
+<div class="card">
+
+<div class="card-icon">🔥</div>
+
+<h3>Priority Management</h3>
+
+<p>
+Tasks can be classified as High, Medium or Low priority.
+</p>
+
+</div>
+
+
+<div class="card">
+
+<div class="card-icon">📂</div>
+
+<h3>Project Management</h3>
+
+<p>
+Related tasks can be grouped under specific projects.
+</p>
+
+</div>
+
+
+<div class="card">
+
+<div class="card-icon">👤</div>
+
+<h3>Task Assignment</h3>
+
+<p>
+Tasks can be assigned to specific team members.
+</p>
+
+</div>
+
+
+<div class="card">
+
+<div class="card-icon">🔔</div>
+
+<h3>Notifications</h3>
+
+<p>
+Upcoming deadlines can be highlighted through reminders.
+</p>
+
+</div>
+
+
+<div class="card">
+
+<div class="card-icon">↔️</div>
+
+<h3>Workflow Management</h3>
+
+<p>
+Tasks can move between Pending, In Progress and Completed.
+</p>
+
+</div>
+
+
+<div class="card">
+
+<div class="card-icon">📈</div>
+
+<h3>Progress Dashboard</h3>
+
+<p>
+Displays total tasks, pending tasks, completed tasks and percentage progress.
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- =====================================================
+     TECHNOLOGIES
+===================================================== -->
+
+<section class="tech">
+
+<div class="container">
+
+<h2 class="section-title">
+💻 Technologies Used
+</h2>
+
+<div class="cards">
+
+<div class="card tech-card">
+
+<div class="tech-logo html-color">
+</>
+</div>
+
+<h3>HTML5</h3>
+
+<p>
+
+HTML provides the structure of the website,
+including forms, sections, buttons, cards and task information.
+
+</p>
+
+</div>
+
+
+<div class="card tech-card">
+
+<div class="tech-logo css-color">
+🎨
+</div>
+
+<h3>CSS3</h3>
+
+<p>
+
+CSS is used for layout, colors, responsive design,
+cards, navigation, dashboard and poster styling.
+
+</p>
+
+</div>
+
+
+<div class="card tech-card">
+
+<div class="tech-logo js-color">
+JS
+</div>
+
+<h3>JavaScript</h3>
+
+<p>
+
+JavaScript provides dynamic functionality such as
+adding, deleting, filtering, completing and tracking tasks.
+
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- =====================================================
+     WORKFLOW
+===================================================== -->
+
+<section class="workflow" id="workflow">
+
+<div class="container">
+
+<h2 class="section-title">
+🔄 System Workflow
+</h2>
+
+<p class="section-subtitle">
+
+The complete task-management process.
+
+</p>
+
+<div class="workflow-container">
+
+<div class="workflow-step">
+
+📝
+
+<strong>Create Task</strong>
+
+</div>
+
+<div class="arrow">→</div>
+
+<div class="workflow-step">
+
+👤
+
+<strong>Assign Task</strong>
+
+</div>
+
+<div class="arrow">→</div>
+
+<div class="workflow-step">
+
+📅
+
+<strong>Set Deadline</strong>
+
+</div>
+
+<div class="arrow">→</div>
+
+<div class="workflow-step">
+
+🔥
+
+<strong>Set Priority</strong>
+
+</div>
+
+<div class="arrow">→</div>
+
+<div class="workflow-step">
+
+⚙️
+
+<strong>Track Progress</strong>
+
+</div>
+
+<div class="arrow">→</div>
+
+<div class="workflow-step">
+
+✅
+
+<strong>Complete</strong>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- =====================================================
+     POSTER
+===================================================== -->
+
+<section class="poster-section">
+
+<div class="container">
+
+<div class="poster">
+
+<h2 class="poster-title">
+
+📋 TASK MANAGEMENT SYSTEM
+
+</h2>
+
+<p class="poster-tagline">
+
+PLAN YOUR WORK • MANAGE YOUR TIME • ACHIEVE YOUR GOALS
+
+</p>
+
+
+<div class="poster-grid">
+
+
+<div class="poster-box">
+
+<h3>🎯 OBJECTIVE</h3>
+
+<ul>
+
+<li>Organize tasks</li>
+<li>Set deadlines</li>
+<li>Prioritize work</li>
+<li>Track progress</li>
+<li>Improve productivity</li>
+
+</ul>
+
+</div>
+
+
+<div class="poster-box">
+
+<h3>⭐ FEATURES</h3>
+
+<ul>
+
+<li>Task Creation</li>
+<li>Project Management</li>
+<li>Task Assignment</li>
+<li>Deadline Tracking</li>
+<li>Progress Monitoring</li>
+
+</ul>
+
+</div>
+
+
+<div class="poster-box">
+
+<h3>💻 TECHNOLOGY</h3>
+
+<ul>
+
+<li>HTML5</li>
+<li>CSS3</li>
+<li>JavaScript</li>
+<li>DOM Manipulation</li>
+<li>Browser Storage</li>
+
+</ul>
+
+</div>
+
+
+<div class="poster-box">
+
+<h3>📊 BENEFITS</h3>
+
+<ul>
+
+<li>Better Organization</li>
+<li>Time Management</li>
+<li>Team Coordination</li>
+<li>Deadline Awareness</li>
+<li>Higher Productivity</li>
+
+</ul>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- =====================================================
+     APPLICATION
+===================================================== -->
+
+<section class="app-section" id="application">
+
+<div class="container">
+
+<h2 class="section-title">
+🚀 Working Task Management Application
+</h2>
+
+<p class="section-subtitle">
+
+Create, manage, filter and track tasks using the interactive application.
+
+</p>
+
+
+<div class="app-panel">
+
+
+<!-- DASHBOARD -->
+
+<div class="dashboard">
+
+<div class="stat">
+
+<div class="stat-number" id="totalTasks">
+0
+</div>
+
+Total Tasks
+
+</div>
+
+
+<div class="stat">
+
+<div class="stat-number" id="pendingTasks">
+0
+</div>
+
+Pending
+
+</div>
+
+
+<div class="stat">
+
+<div class="stat-number" id="progressTasksCount">
+0
+</div>
+
+In Progress
+
+</div>
+
+
+<div class="stat">
+
+<div class="stat-number" id="completedTasks">
+0
+</div>
+
+Completed
+
+</div>
+
+
+<div class="stat">
+
+<div class="stat-number" id="progressPercent">
+0%
+</div>
+
+Overall Progress
+
+</div>
+
+</div>
+
+
+
+<!-- REMINDER -->
+
+<div class="reminder">
+
+<strong>🔔 Deadline Reminder</strong>
+
+<p id="reminderText">
+
+Add tasks with deadlines to see reminders here.
+
+</p>
+
+</div>
+
+
+
+<!-- TASK FORM -->
+
+<div class="task-form">
+
+<h3>➕ Create New Task</h3>
+
+<br>
+
+<div class="form-grid">
+
+<input
+type="text"
+id="taskTitle"
+placeholder="Task title"
+>
+
+<input
+type="date"
+id="taskDate"
+>
+
+<select id="taskPriority">
+
+<option value="High">
+High Priority
+</option>
+
+<option value="Medium">
+Medium Priority
+</option>
+
+<option value="Low">
+Low Priority
+</option>
+
+</select>
+
+<input
+type="text"
+id="taskProject"
+placeholder="Project name"
+>
+
+<input
+type="text"
+id="taskUser"
+placeholder="Assign to"
+>
+
+</div>
+
+<br>
+
+<textarea
+id="taskDescription"
+placeholder="Task description">
+</textarea>
+
+<button
+class="btn btn-primary"
+onclick="addTask()">
+
+➕ Add Task
+
+</button>
+
+</div>
+
+
+
+<!-- FILTERS -->
+
+<div class="filters">
+
+<input
+type="text"
+id="searchTask"
+placeholder="🔎 Search tasks..."
+oninput="displayTasks()"
+>
+
+<select
+id="filterPriority"
+onchange="displayTasks()">
+
+<option value="All">
+All Priorities
+</option>
+
+<option value="High">
+High
+</option>
+
+<option value="Medium">
+Medium
+</option>
+
+<option value="Low">
+Low
+</option>
+
+</select>
+
+
+<select
+id="filterProject"
+onchange="displayTasks()">
+
+<option value="All">
+All Projects
+</option>
+
+</select>
+
+</div>
+
+
+
+<!-- TASK BOARD -->
+
+<div class="task-board">
+
+
+<div class="task-column">
+
+<h3>
+📌 Pending
+</h3>
+
+<div id="pendingList">
+
+</div>
+
+</div>
+
+
+<div class="task-column">
+
+<h3>
+⚙️ In Progress
+</h3>
+
+<div id="progressList">
+
+</div>
+
+</div>
+
+
+<div class="task-column">
+
+<h3>
+✅ Completed
+</h3>
+
+<div id="completedList">
+
+</div>
+
+</div>
+
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- =====================================================
+     PROGRESS
+===================================================== -->
+
+<section class="statistics">
+
+<div class="container">
+
+<h2 class="section-title">
+📊 Project Progress
+</h2>
+
+<div class="progress-container">
+
+<div class="progress-bar-bg">
+
+<div
+class="progress-bar"
+id="mainProgressBar">
+</div>
+
+</div>
+
+<p
+class="progress-text"
+id="mainProgressText">
+
+0% Completed
+
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- =====================================================
+     VIDEOS
+===================================================== -->
+
+<section class="videos" id="videos">
+
+<div class="container">
+
+<h2 class="section-title">
+🎬 Project Videos
+</h2>
+
+<p class="section-subtitle">
+
+These videos can be used to understand how task-management
+applications are developed using HTML, CSS and JavaScript.
+
+</p>
+
+
+<div class="video-grid">
+
+
+<div class="video-card">
+
+<iframe
+src="https://www.youtube.com/embed/aTP12q0U5Jk"
+allowfullscreen>
+</iframe>
+
+<h3>
+Build a Task Manager using HTML, CSS and JavaScript
+</h3>
+
+<p>
+
+This tutorial demonstrates building an interactive task manager
+with task creation, editing, deletion and completion.
+
+</p>
+
+</div>
+
+
+<div class="video-card">
+
+<iframe
+src="https://www.youtube.com/embed/q3-vTZn0JNs"
+allowfullscreen>
+</iframe>
+
+<h3>
+Task Manager with JavaScript and Local Storage
+</h3>
+
+<p>
+
+This tutorial demonstrates a modern task manager with browser
+storage and responsive JavaScript functionality.
+
+</p>
+
+</div>
+
+
+<div class="video-card">
+
+<iframe
+src="https://www.youtube.com/embed/4RjD1j7YvT4"
+allowfullscreen>
+</iframe>
+
+<h3>
+HTML CSS JavaScript Todo Project
+</h3>
+
+<p>
+
+A useful beginner-level reference for understanding the
+structure of a web-based task application.
+
+</p>
+
+</div>
+
+</div>
+
+<br>
+
+<div class="info-box">
+
+<p>
+
+<strong>Video Reference:</strong>
+
+The first video demonstrates building a task manager from
+scratch using HTML, CSS and JavaScript. The second focuses
+on JavaScript and LocalStorage for task persistence.
+
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- =====================================================
+     ADVANTAGES
+===================================================== -->
+
+<section class="advantages">
+
+<div class="container">
+
+<h2 class="section-title">
+✅ Advantages
+</h2>
+
+<div class="cards">
+
+<div class="card">
+
+<h3>⏱ Time Saving</h3>
+
+<p>
+Users can organize tasks quickly instead of maintaining
+multiple manual lists.
+</p>
+
+</div>
+
+
+<div class="card">
+
+<h3>📅 Deadline Control</h3>
+
+<p>
+Due dates help users identify upcoming work and deadlines.
+</p>
+
+</div>
+
+
+<div class="card">
+
+<h3>📈 Progress Visibility</h3>
+
+<p>
+The dashboard gives a clear view of project progress.
+</p>
+
+</div>
+
+
+<div class="card">
+
+<h3>🤝 Team Coordination</h3>
+
+<p>
+Task assignments improve responsibility and collaboration.
+</p>
+
+</div>
+
+
+<div class="card">
+
+<h3>🔥 Prioritization</h3>
+
+<p>
+Important tasks can be identified using priority levels.
+</p>
+
+</div>
+
+
+<div class="card">
+
+<h3>📱 Responsive Design</h3>
+
+<p>
+The interface is designed to work across different screen sizes.
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- =====================================================
+     FUTURE SCOPE
+===================================================== -->
+
+<section class="future" id="future">
+
+<div class="container">
+
+<h2 class="section-title">
+🚀 Future Scope
+</h2>
+
+<p class="section-subtitle">
+
+Possible improvements for a production-level Task Management System.
+
+</p>
+
+<div class="cards">
+
+
+<div class="card">
+
+<h3>🔐 User Authentication</h3>
+
+<p>
+Login and registration can be added to protect individual
+user accounts.
+</p>
+
+</div>
+
+
+<div class="card">
+
+<h3>☁️ Cloud Database</h3>
+
+<p>
+Tasks can be stored in MySQL, MongoDB, Firebase or another
+cloud database.
+</p>
+
+</div>
+
+
+<div class="card">
+
+<h3>🔔 Push Notifications</h3>
+
+<p>
+The system can send browser, mobile or email notifications
+for deadlines.
+</p>
+
+</div>
+
+
+<div class="card">
+
+<h3>📱 Mobile Application</h3>
+
+<p>
+The system can be converted into Android and iOS applications.
+</p>
+
+</div>
+
+
+<div class="card">
+
+<h3>🤖 AI Prioritization</h3>
+
+<p>
+Artificial intelligence can recommend task priorities based
+on deadlines and importance.
+</p>
+
+</div>
+
+
+<div class="card">
+
+<h3>📅 Calendar Integration</h3>
+
+<p>
+Tasks can be synchronized with calendar applications.
+</p>
+
+</div>
+
+
+<div class="card">
+
+<h3>👥 Real-Time Collaboration</h3>
+
+<p>
+Multiple team members can work on the same project with
+real-time updates.
+</p>
+
+</div>
+
+
+<div class="card">
+
+<h3>📊 Advanced Analytics</h3>
+
+<p>
+Graphs and reports can analyze productivity, deadlines and
+team performance.
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- =====================================================
+     VIVA
+===================================================== -->
+
+<section class="viva">
+
+<div class="container">
+
+<h2 class="section-title" style="color:white;">
+🎤 Viva Questions & Answers
+</h2>
+
+<div class="viva-box">
+
+
+<h3 class="viva-question">
+1. What is a Task Management System?
+</h3>
+
+<p>
+
+It is a software application used to create, organize,
+assign, schedule and track tasks.
+
+</p>
+
+
+<h3 class="viva-question">
+2. What is the main purpose of this project?
+</h3>
+
+<p>
+
+The main purpose is to improve task organization,
+deadline management, progress tracking and productivity.
+
+</p>
+
+
+<h3 class="viva-question">
+3. Which technologies are used?
+</h3>
+
+<p>
+
+HTML5, CSS3 and JavaScript are used to build the front-end
+application.
+
+</p>
+
+
+<h3 class="viva-question">
+4. What is the role of HTML?
+</h3>
+
+<p>
+
+HTML creates the structure of the web page, including forms,
+buttons, headings, cards and task sections.
+
+</p>
+
+
+<h3 class="viva-question">
+5. What is the role of CSS?
+</h3>
+
+<p>
+
+CSS controls the appearance, layout, colors, responsiveness
+and visual design.
+
+</p>
+
+
+<h3 class="viva-question">
+6. What is the role of JavaScript?
+</h3>
+
+<p>
+
+JavaScript makes the application interactive. It manages
+task creation, deletion, filtering, status changes and
+dashboard statistics.
+
+</p>
+
+
+<h3 class="viva-question">
+7. What are the task statuses?
+</h3>
+
+<p>
+
+The project uses Pending, In Progress and Completed statuses.
+
+</p>
+
+
+<h3 class="viva-question">
+8. What is task priority?
+</h3>
+
+<p>
+
+Priority identifies the importance of a task. The project
+uses High, Medium and Low priority.
+
+</p>
+
+
+<h3 class="viva-question">
+9. What is future scope?
+</h3>
+
+<p>
+
+Authentication, cloud databases, mobile applications,
+push notifications, AI-based prioritization, calendar
+integration and real-time collaboration can be added.
+
+</p>
+
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- =====================================================
+     CONCLUSION
+===================================================== -->
+
+<section class="conclusion">
+
+<div class="container">
+
+<h2 class="section-title">
+🏁 Conclusion
+</h2>
+
+<div class="conclusion-box">
+
+<p>
+
+The <strong>Task Management System</strong> provides a simple
+and effective solution for organizing and monitoring work.
+
+</p>
+
+<br>
+
+<p>
+
+Users can create tasks, set deadlines, assign responsibilities,
+select priorities and track progress through a visual dashboard.
+
+</p>
+
+<br>
+
+<p>
+
+The project demonstrates important web-development concepts
+including HTML structure, CSS styling and JavaScript DOM
+manipulation.
+
+</p>
+
+<br>
+
+<p>
+
+With future integration of databases, authentication,
+notifications, AI and mobile applications, the project can
+be transformed into a complete professional productivity
+platform.
+
+</p>
+
+</div>
+
+</div>
+
+</section>
+
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer>
+
+<h2>
+📋 TASK MANAGEMENT SYSTEM
+</h2>
+
+<p>
+Organize • Prioritize • Schedule • Collaborate • Complete
+</p>
+
+<p>
+Developed using HTML5 • CSS3 • JavaScript
+</p>
+
+<p>
+© 2026 Task Management System Project
+</p>
+
+</footer>
+
+
+
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
+
+<script>
+
+
+/* =====================================================
+   TASK DATA
+===================================================== */
+
+let tasks = JSON.parse(
+    localStorage.getItem("taskManagementData")
+) || [];
+
+
+/* =====================================================
+   SAVE DATA
+===================================================== */
+
+function saveTasks() {
+
+    localStorage.setItem(
+        "taskManagementData",
+        JSON.stringify(tasks)
+    );
+
+}
+
+
+/* =====================================================
+   ADD TASK
+===================================================== */
+
+function addTask() {
+
+    const title =
+        document.getElementById("taskTitle").value.trim();
+
+    const description =
+        document.getElementById("taskDescription").value.trim();
+
+    const date =
+        document.getElementById("taskDate").value;
+
+    const priority =
+        document.getElementById("taskPriority").value;
+
+    const project =
+        document.getElementById("taskProject").value.trim();
+
+    const user =
+        document.getElementById("taskUser").value.trim();
+
+
+    if (title === "") {
+
+        alert("Please enter a task title.");
+
+        return;
+
+    }
+
+
+    const task = {
+
+        id: Date.now(),
+
+        title: title,
+
+        description: description,
+
+        date: date,
+
+        priority: priority,
+
+        project: project || "General",
+
+        user: user || "Not Assigned",
+
+        status: "pending"
+
+    };
+
+
+    tasks.push(task);
+
+
+    saveTasks();
+
+    clearForm();
+
+    displayTasks();
+
+    alert("Task added successfully!");
+
+}
+
+
+/* =====================================================
+   CLEAR FORM
+===================================================== */
+
+function clearForm() {
+
+    document.getElementById("taskTitle").value = "";
+
+    document.getElementById("taskDescription").value = "";
+
+    document.getElementById("taskDate").value = "";
+
+    document.getElementById("taskProject").value = "";
+
+    document.getElementById("taskUser").value = "";
+
+}
+
+
+/* =====================================================
+   DISPLAY TASKS
+===================================================== */
+
+function displayTasks() {
+
+    const pendingList =
+        document.getElementById("pendingList");
+
+    const progressList =
+        document.getElementById("progressList");
+
+    const completedList =
+        document.getElementById("completedList");
+
+
+    pendingList.innerHTML = "";
+
+    progressList.innerHTML = "";
+
+    completedList.innerHTML = "";
+
+
+    const search =
+        document.getElementById("searchTask")
+        .value
+        .toLowerCase();
+
+
+    const priorityFilter =
+        document.getElementById("filterPriority").value;
+
+
+    const projectFilter =
+        document.getElementById("filterProject").value;
+
+
+    const filteredTasks =
+        tasks.filter(task => {
+
+
+            const matchesSearch =
+                task.title
+                .toLowerCase()
+                .includes(search) ||
+
+                task.description
+                .toLowerCase()
+                .includes(search);
+
+
+            const matchesPriority =
+                priorityFilter === "All" ||
+                task.priority === priorityFilter;
+
+
+            const matchesProject =
+                projectFilter === "All" ||
+                task.project === projectFilter;
+
+
+            return (
+                matchesSearch &&
+                matchesPriority &&
+                matchesProject
+            );
+
+        });
+
+
+    filteredTasks.forEach(task => {
+
+        const card =
+            document.createElement("div");
+
+
+        card.className = "task-card";
+
+
+        let priorityClass = "";
+
+        if (task.priority === "High") {
+
+            priorityClass =
+                "priority-high";
+
+        }
+
+        else if (task.priority === "Medium") {
+
+            priorityClass =
+                "priority-medium";
+
+        }
+
+        else {
+
+            priorityClass =
+                "priority-low";
+
+        }
+
+
+        card.innerHTML = `
+
+            <h4>
+                ${escapeHTML(task.title)}
+            </h4>
+
+            <p>
+                ${escapeHTML(task.description)}
+            </p>
+
+            <p>
+                📅 <strong>Deadline:</strong>
+                ${task.date || "Not Set"}
+            </p>
+
+            <p>
+                📂 <strong>Project:</strong>
+                ${escapeHTML(task.project)}
+            </p>
+
+            <p>
+                👤 <strong>Assigned:</strong>
+                ${escapeHTML(task.user)}
+            </p>
+
+            <p>
+                🔥 <strong>Priority:</strong>
+                <span class="${priorityClass}">
+                    ${task.priority}
+                </span>
+            </p>
+
+            <div class="task-actions">
+
+                ${
+                    task.status !== "progress"
+                    ?
+                    `<button
+                        class="small-btn progress-btn"
+                        onclick="moveToProgress(${task.id})">
+                        ⚙️ Progress
+                    </button>`
+                    :
+                    ""
+                }
+
+                ${
+                    task.status !== "completed"
+                    ?
+                    `<button
+                        class="small-btn complete-btn"
+                        onclick="completeTask(${task.id})">
+                        ✅ Complete
+                    </button>`
+                    :
+                    `<button
+                        class="small-btn progress-btn"
+                        onclick="undoTask(${task.id})">
+                        ↩️ Undo
+                    </button>`
+                }
+
+                <button
+                    class="small-btn edit-btn"
+                    onclick="editTask(${task.id})">
+                    ✏️ Edit
+                </button>
+
+                <button
+                    class="small-btn delete-btn"
+                    onclick="deleteTask(${task.id})">
+                    🗑 Delete
+                </button>
+
+            </div>
+
+        `;
+
+
+        if (task.status === "pending") {
+
+            pendingList.appendChild(card);
+
+        }
+
+        else if (task.status === "progress") {
+
+            progressList.appendChild(card);
+
+        }
+
+        else {
+
+            completedList.appendChild(card);
+
+        }
+
+    });
+
+
+    updateProjectFilter();
+
+    updateDashboard();
+
+    updateReminder();
+
+}
+
+
+/* =====================================================
+   ESCAPE HTML
+===================================================== */
+
+function escapeHTML(text) {
+
+    const div =
+        document.createElement("div");
+
+    div.textContent = text;
+
+    return div.innerHTML;
+
+}
+
+
+/* =====================================================
+   MOVE TO PROGRESS
+===================================================== */
+
+function moveToProgress(id) {
+
+    const task =
+        tasks.find(task => task.id === id);
+
+
+    if (task) {
+
+        task.status = "progress";
+
+        saveTasks();
+
+        displayTasks();
+
+    }
+
+}
+
+
+/* =====================================================
+   COMPLETE TASK
+===================================================== */
+
+function completeTask(id) {
+
+    const task =
+        tasks.find(task => task.id === id);
+
+
+    if (task) {
+
+        task.status = "completed";
+
+        saveTasks();
+
+        displayTasks();
+
+    }
+
+}
+
+
+/* =====================================================
+   UNDO TASK
+===================================================== */
+
+function undoTask(id) {
+
+    const task =
+        tasks.find(task => task.id === id);
+
+
+    if (task) {
+
+        task.status = "pending";
+
+        saveTasks();
+
+        displayTasks();
+
+    }
+
+}
+
+
+/* =====================================================
+   DELETE TASK
+===================================================== */
+
+function deleteTask(id) {
+
+    if (
+        confirm(
+            "Are you sure you want to delete this task?"
+        )
+    ) {
+
+        tasks =
+            tasks.filter(task => task.id !== id);
+
+
+        saveTasks();
+
+        displayTasks();
+
+    }
+
+}
+
+
+/* =====================================================
+   EDIT TASK
+===================================================== */
+
+function editTask(id) {
+
+    const task =
+        tasks.find(task => task.id === id);
+
+
+    if (!task) {
+
+        return;
+
+    }
+
+
+    const newTitle =
+        prompt(
+            "Enter new task title:",
+            task.title
+        );
+
+
+    if (
+        newTitle !== null &&
+        newTitle.trim() !== ""
+    ) {
+
+        task.title =
+            newTitle.trim();
+
+        saveTasks();
+
+        displayTasks();
+
+    }
+
+}
+
+
+/* =====================================================
+   PROJECT FILTER
+===================================================== */
+
+function updateProjectFilter() {
+
+    const select =
+        document.getElementById(
+            "filterProject"
+        );
+
+
+    const currentValue =
+        select.value;
+
+
+    const projects =
+        [...new Set(
+            tasks.map(task => task.project)
+        )];
+
+
+    select.innerHTML =
+        `<option value="All">
+            All Projects
+        </option>`;
+
+
+    projects.forEach(project => {
+
+        const option =
+            document.createElement("option");
+
+
+        option.value = project;
+
+        option.textContent = project;
+
+
+        select.appendChild(option);
+
+    });
+
+
+    if (
+        projects.includes(currentValue)
+    ) {
+
+        select.value =
+            currentValue;
+
+    }
+
+}
+
+
+/* =====================================================
+   DASHBOARD
+===================================================== */
+
+function updateDashboard() {
+
+    const total =
+        tasks.length;
+
+
+    const pending =
+        tasks.filter(
+            task => task.status === "pending"
+        ).length;
+
+
+    const progress =
+        tasks.filter(
+            task => task.status === "progress"
+        ).length;
+
+
+    const completed =
+        tasks.filter(
+            task => task.status === "completed"
+        ).length;
+
+
+    let percentage = 0;
+
+
+    if (total > 0) {
+
+        percentage =
+            Math.round(
+                (completed / total) * 100
+            );
+
+    }
+
+
+    document.getElementById(
+        "totalTasks"
+    ).textContent = total;
+
+
+    document.getElementById(
+        "pendingTasks"
+    ).textContent = pending;
+
+
+    document.getElementById(
+        "progressTasksCount"
+    ).textContent = progress;
+
+
+    document.getElementById(
+        "completedTasks"
+    ).textContent = completed;
+
+
+    document.getElementById(
+        "progressPercent"
+    ).textContent =
+        percentage + "%";
+
+
+    document.getElementById(
+        "mainProgressBar"
+    ).style.width =
+        percentage + "%";
+
+
+    document.getElementById(
+        "mainProgressText"
+    ).textContent =
+        percentage +
+        "% Completed";
+
+}
+
+
+/* =====================================================
+   DEADLINE REMINDER
+===================================================== */
+
+function updateReminder() {
+
+    const reminder =
+        document.getElementById(
+            "reminderText"
+        );
+
+
+    const upcoming =
+        tasks
+        .filter(
+            task =>
+                task.date &&
+                task.status !== "completed"
+        )
+        .sort(
+            (a,b) =>
+                new Date(a.date) -
+                new Date(b.date)
+        );
+
+
+    if (upcoming.length === 0) {
+
+        reminder.textContent =
+            "No upcoming deadlines.";
+
+        return;
+
+    }
+
+
+    const task =
+        upcoming[0];
+
+
+    const today =
+        new Date();
+
+
+    const deadline =
+        new Date(task.date);
+
+
+    const difference =
+        Math.ceil(
+            (
+                deadline - today
+            )
+            /
+            (1000 * 60 * 60 * 24)
+        );
+
+
+    if (difference < 0) {
+
+        reminder.innerHTML =
+            `⚠️ <strong>Overdue:</strong>
+             ${escapeHTML(task.title)}
+             was due on ${task.date}.`;
+
+    }
+
+    else if (difference === 0) {
+
+        reminder.innerHTML =
+            `🔔 <strong>Due Today:</strong>
+             ${escapeHTML(task.title)}.`;
+
+    }
+
+    else if (difference === 1) {
+
+        reminder.innerHTML =
+            `⏰ <strong>Due Tomorrow:</strong>
+             ${escapeHTML(task.title)}.`;
+
+    }
+
+    else {
+
+        reminder.innerHTML =
+            `📅 <strong>Upcoming:</strong>
+             ${escapeHTML(task.title)}
+             is due in ${difference} days.`;
+
+    }
+
+}
+
+
+/* =====================================================
+   INITIAL DISPLAY
+===================================================== */
+
+displayTasks();
+
+
+</script>
+
+
+</body>
+
+</html>   TYPE HIS CODE VS CODE
